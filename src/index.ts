@@ -1,9 +1,10 @@
 import { Telegraf } from 'telegraf';
 
 import { checkBotTokenProvided } from './utils/checkBotTokenProvided';
+import {config} from 'dotenv';
+config();
 
-// TODO figure out how to use env vars in bundled scripts
-const botToken = '1491024581:AAF_WY8v6n4zCCcch1lRvO5A9eGxA2-613U';
+const botToken = process.env.BOT_TOKEN;
 
 if (!checkBotTokenProvided(botToken)) throw new Error('A bot token was not provided!');
 
@@ -15,4 +16,4 @@ bot.command('need_stand', (ctx) => {
   return ctx.reply(randomNumber.toString());
 });
 bot.launch();
-console.log('Telegram bot is running! 🚀🚀🚀')
+console.log('Telegram bot is running! 🚀🚀🚀');

@@ -44,11 +44,14 @@
   },
   "dependencies": {
     "@bitauth/libauth": "^1.17.1",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.10.15",
     "telegraf": "^3.38.0"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/mongoose": "^5.10.1",
     "@types/node": "^14.14.9",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
