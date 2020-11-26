@@ -9,7 +9,7 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "start": "node build/main/index.js",
+    "start": "yarn build && node build/main/index.js",
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
@@ -56,6 +56,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/mongoose": "^5.10.1",
     "@types/node": "^14.14.9",
+    "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "ava": "^3.12.1",
