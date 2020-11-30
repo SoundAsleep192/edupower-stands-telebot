@@ -1,3 +1,3 @@
-# edu-telebot
+# edupower-stands-telebot
 
-A telegram bot
+A telegram bot for managing Jenkins stands
