@@ -1,31 +1,34 @@
-import { Telegraf, Markup } from 'telegraf';
+require('dotenv').config();
+import { Telegraf, Stage, session } from 'telegraf';
+import { SceneContextMessageUpdate } from 'telegraf/typings/stage';
+import { statusScene } from './controllers/status';
+import { takeScene } from './controllers/take';
+import { users } from './storage';
 
 import { checkBotTokenProvided } from './utils/checkBotTokenProvided';
-import {config} from 'dotenv';
-config();
 
-// Token check
-const botToken = process.env.BOT_TOKEN;
+if (!checkBotTokenProvided(process.env.BOT_TOKEN)) {
+  throw new Error('A bot token was not provided!');
+}
 
-if (!checkBotTokenProvided(botToken)) throw new Error('A bot token was not provided!');
+const bot = new Telegraf<SceneContextMessageUpdate>(process.env.BOT_TOKEN);
+const stage = new Stage([statusScene, takeScene], { ttl: 10 });
+bot.use(session());
+bot.use(stage.middleware());
+bot.command('status', (ctx) => ctx.scene.enter('status'));
+bot.command('take', (ctx) => ctx.scene.enter('take'));
 
-// Bot setup
-const bot = new Telegraf(botToken);
+bot.start((ctx) => {
+  const { id, username, first_name, last_name } = ctx.message!.from!;
 
-bot.start((ctx) => ctx.reply('Hello! Please, introduce yourself'));
-bot.help((ctx) => ctx.reply('Write /need_stand to get a random stand number'));
+  users.push({
+    id,
+    username,
+    fullName: first_name + (last_name ? ' ' + last_name : ''),
+  });
 
-bot.command('need_stand', (ctx) => {
-  const randomNumber = Math.round(Math.random() * (106 - 1) + 1);
-  return ctx.reply(`You can take stand №${randomNumber}`);
-});
-
-bot.command('take', ({ reply }) => {
-  return  reply('Which stand you wanna take?', Markup
-  .keyboard(['31', '32', '/take_33'])
-  .oneTime()
-  .resize()
-  .extra()
+  return ctx.reply(
+    `Привет, ${first_name}! Чтобы посмотреть статус, используй /status\nЧтобы занять стенд, используй /take`
   );
 });
 
